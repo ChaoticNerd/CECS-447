@@ -1,0 +1,54 @@
+# =========================
+# General Build Artifacts
+# =========================
+*.log
+*.tmp
+*.bak
+*.o
+*.obj
+*.d
+*.elf
+*.axf
+*.hex
+*.bin
+*.map
+*.lst
+*.out
+
+# =========================
+# Keil uVision
+# =========================
+Objects/
+Listings/
+*.uvoptx
+*.uvguix*
+*.uvgui.*
+*.dep
+
+# =========================
+# ARM / GCC Toolchain
+# =========================
+*.dmp
+*.crf
+*.htm
+*.lnp
+*.sct
+*.scvd
+
+# =========================
+# VSCode
+# =========================
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# =========================
+# OS Files
+# =========================
+.DS_Store
+Thumbs.db
+*.uvoptx
+*.uvprojx
+keil/RTE/_Project/RTE_Components.h
+keil/Project.uvoptx
