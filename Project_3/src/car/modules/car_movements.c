@@ -16,16 +16,26 @@ void forward(void){
 }
 
 void off(void){
-	LEFT_SLP  &= ~SLEEP_BIT;
-	RIGHT_SLP &= ~SLEEP_BIT;
+	PWM0_ENABLE_R &= ~BOTH_WHEELS;
 }
 
 void on(void){
+	PWM0_ENABLE_R |= BOTH_WHEELS;
 	LEFT_SLP  |= SLEEP_BIT;
 	RIGHT_SLP |= SLEEP_BIT;
 }
 
 void backward(void){
 	LEFT_DIR  &= ~FORWARD;
+	RIGHT_DIR &= ~FORWARD;
+}
+
+void pivot_right(void){
+	LEFT_DIR  &= ~FORWARD;
+	RIGHT_DIR |= FORWARD;
+}
+
+void pivot_left(void){
+	LEFT_DIR  |= FORWARD;
 	RIGHT_DIR &= ~FORWARD;
 }

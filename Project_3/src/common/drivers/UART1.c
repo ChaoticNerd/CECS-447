@@ -11,6 +11,7 @@
 #include "../../setup/UART0.h" // definition for LF
 
 extern uint8_t BluetoothResponse[30];
+extern bool SW1_PRESSED;
 bool BLT_Finished = 0;
 
 //------------UART1_Init------------
@@ -31,13 +32,13 @@ void UART1_Init(void){
 	
                                         // 8 bit word length (no parity bits, one stop bit, FIFOs)
   UART1_LCRH_R = (UART_LCRH_WLEN_8|UART_LCRH_FEN);
-  UART1_CTL_R |= 0x301;                 // enable UART for both Rx and Tx
+  UART1_CTL_R |= UART1_CTL_RX_TX;                 // enable UART for both Rx and Tx
   
-  GPIO_PORTB_AFSEL_R |= 0x03;           // enable alt funct on PB1,PB0
-  GPIO_PORTB_DEN_R |= 0x03;             // enable digital I/O on PB1,PB0
+  GPIO_PORTB_AFSEL_R |= PORT01_PINS;           // enable alt funct on PB1,PB0
+  GPIO_PORTB_DEN_R |= PORT01_PINS;             // enable digital I/O on PB1,PB0
                                         // configure PB1,PB0 as UART1
-  GPIO_PORTB_PCTL_R = (GPIO_PORTB_PCTL_R&0xFFFFFF00)+0x00000011;
-  GPIO_PORTB_AMSEL_R &= ~0x03;          // disable analog functionality on PB1,PB0
+  GPIO_PORTB_PCTL_R = (GPIO_PORTB_PCTL_R&PORT01_CLEAR_PCTL)+PORT01_SET_PCTL;
+  GPIO_PORTB_AMSEL_R &= ~PORT01_PINS;          // disable analog functionality on PB1,PB0
 }
 
 //------------UART1_OutChar------------
@@ -65,7 +66,12 @@ void UART1_OutString(uint8_t *pt){
 // Input: none
 // Output: ASCII code for key typed
 uint8_t UART1_InChar(void){
-  while((UART1_FR_R&UART_FR_RXFE) != 0);
+	bool SW1_SAVED = SW1_PRESSED;
+  while((UART1_FR_R&UART_FR_RXFE) != 0){
+		if(SW1_PRESSED != SW1_SAVED){
+			return 0;
+		}
+	}
   return((uint8_t)(UART1_DR_R&0xFF));
 }
 

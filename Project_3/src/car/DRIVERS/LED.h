@@ -22,6 +22,8 @@
 #define  WHITE   0x0E
 #define  DARK    0x00
 
+#define PORT123_PINS 0x0E
+#define PORT123_BITS 0x0000FFF0
 
 // Function prototypes
 void LED_Init(void);

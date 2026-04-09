@@ -14,7 +14,10 @@
 #define LF   0x0A
 #define BS   0x08
 #define SP   0x20
-
+#define PORT01_PINS 0x03
+#define UART1_CTL_RX_TX 0x301
+#define PORT01_CLEAR_PCTL 0xFFFFFF00
+#define PORT01_SET_PCTL 0x00000011
 
 //------------UART1_Init------------
 // Initialize the UART1 for 115200 baud rate (assuming 80 MHz clock),

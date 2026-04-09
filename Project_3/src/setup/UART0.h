@@ -10,6 +10,8 @@
 #include "../tm4c123gh6pm.h"
 #include "stdbool.h"
 
+#define PORT01_PINS 0x03
+#define UART0_CTL_RX_TX 0x301
 
 //------------UART0_Init------------
 // Initialize the UART for 57600 baud rate (assuming 80 MHz clock),

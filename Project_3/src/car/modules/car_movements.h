@@ -34,3 +34,5 @@ void forward(void);
 void backward(void);
 void off(void);
 void on(void);
+void pivot_left(void);
+void pivot_right(void);

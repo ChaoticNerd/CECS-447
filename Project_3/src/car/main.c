@@ -17,6 +17,7 @@ extern void mode_one_manager(void);
 extern void mode_two_manager(void);
 extern void DisableInterrupts();
 extern void EnableInterrupts();
+extern void circle_operation();
 
 // function prototypes
 void System_Init(void);
@@ -26,8 +27,10 @@ int main(void){
   
   while(1){
     if(!SW1_PRESSED){ // 0 is mode 1
+				change_LED(BLUE);
         mode_one_manager();
     }else if(SW1_PRESSED){ // 1 is mode 2
+				change_LED(GREEN);
         mode_two_manager();
     }
   }

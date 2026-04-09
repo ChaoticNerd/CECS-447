@@ -12,7 +12,6 @@
 // project module header files. 
 
 #include "FSM.h"
-//#include "../DRIVERS/Switches.h"
 int current_mode1 = 0;
 int current_mode2 = 0;
 extern bool SW1_PRESSED;
@@ -21,10 +20,12 @@ extern void forward(void);
 extern void backward(void);
 extern void off(void);
 extern void on(void);
+extern void pivot_left(void);
+extern void pivot_right(void);
 
-uint8_t speed = 1;
+uint8_t speed = 4;
 
-extern void PWM_Duty(unsigned long duty_L, unsigned long duty_R);
+extern void PWM_Duty(uint16_t  duty_L, uint16_t duty_R);
 
 
 enum mode_one_states { 
@@ -33,18 +34,7 @@ enum mode_one_states {
     CIRCLE,
     SQUARE,
     ZIGZAG,
-//    EXIT_MODE1
 };
-
-
-// states_one demo_mode_fsm[6]={ 
-//     {{IDLE,     FIGURE8,CIRCLE, SQUARE, ZIGZAG, EXIT_MODE1}},
-//     {{IDLE,     FIGURE8,CIRCLE, SQUARE, ZIGZAG, EXIT_MODE1}},
-//     {{IDLE,     FIGURE8,CIRCLE, SQUARE, ZIGZAG, EXIT_MODE1}},
-//     {{IDLE,     FIGURE8,CIRCLE, SQUARE, ZIGZAG, EXIT_MODE1}},
-//     {{IDLE,     FIGURE8,CIRCLE, SQUARE, ZIGZAG, EXIT_MODE1}},
-//     {{IDLE,     IDLE,   IDLE,   IDLE,   IDLE,   IDLE}}
-// };
 
 states_one demo_mode_fsm[5]={ 
     {{IDLE,     FIGURE8,CIRCLE, SQUARE, ZIGZAG}},
@@ -62,20 +52,7 @@ enum mode_two_states {
     RIGHT,
     SPEEDUP,
     SPEEDDOWN,
-//    EXIT_MODE2 
 };
-
-
-// states_two drive_mode_fsm[8]={ 
-//     {{STOP,FORWARD,BACKWARD,LEFT,RIGHT,SPEEDUP,SPEEDDOWN,EXIT_MODE2}},
-//     {{STOP,FORWARD,BACKWARD,LEFT,RIGHT,SPEEDUP,SPEEDDOWN,EXIT_MODE2}},
-//     {{STOP,FORWARD,BACKWARD,LEFT,RIGHT,SPEEDUP,SPEEDDOWN,EXIT_MODE2}},
-//     {{STOP,FORWARD,BACKWARD,LEFT,RIGHT,SPEEDUP,SPEEDDOWN,EXIT_MODE2}},
-//     {{STOP,FORWARD,BACKWARD,LEFT,RIGHT,SPEEDUP,SPEEDDOWN,EXIT_MODE2}},
-//     {{STOP,FORWARD,BACKWARD,LEFT,RIGHT,SPEEDUP,SPEEDDOWN,EXIT_MODE2}},
-//     {{STOP,FORWARD,BACKWARD,LEFT,RIGHT,SPEEDUP,SPEEDDOWN,EXIT_MODE2}},
-//     {{STOP,STOP,   STOP,    STOP,STOP, STOP,   STOP,     STOP}}
-// };
 
 states_two drive_mode_fsm[7]={ 
     {{STOP,FORWARD,BACKWARD,LEFT,RIGHT,SPEEDUP,SPEEDDOWN}},
@@ -87,6 +64,8 @@ states_two drive_mode_fsm[7]={
     {{STOP,FORWARD,BACKWARD,LEFT,RIGHT,SPEEDUP,SPEEDDOWN}},
 };
 
+// @brief: Handles how mode 1 handles inputs (State machine)
+// Loops inside the function (Based on mode 1 or mode 2)
 void mode_one_manager(void){
     
     uint8_t char_input = UART1_InChar();
@@ -94,51 +73,47 @@ void mode_one_manager(void){
     while(!SW1_PRESSED){
 
         switch(char_input){ //check for the read char value from the Bluetooth
+					 case 0x5A: // if char 'Z' in zigzag state
+                current_mode1 = demo_mode_fsm[current_mode1].next[4];
+								speed=2;
+								zigzag_operation();
+            break;
             case 0x38: // if char '8' in figure 8 state
                 current_mode1 = demo_mode_fsm[current_mode1].next[1];
+								speed = 7;
                 figure8_operation();
             break;
-            case 0x67: // if char 'C' in circle state
+            case 0x43: // if char 'C' in circle state
                 current_mode1 = demo_mode_fsm[current_mode1].next[2];
+                speed=7;
                 circle_operation();
             break;
             case 0x53: // if char 'S' in square state
                 current_mode1 = demo_mode_fsm[current_mode1].next[3];
+						speed = 2;
                 square_operation();
+					
             break;
-            case 0x5A: // if char 'Z' in zigzag state
-                current_mode1 = demo_mode_fsm[current_mode1].next[4];
-                zigzag_operation();
-            break;
-            default: // defaulting to an idle state so it does not perform unneccessary operation
-                current_mode1 = demo_mode_fsm[current_mode1].next[0];
-                off();
-            break;
+								
+            
         }
+				//change_LED(BLUE);
+				current_mode1 = demo_mode_fsm[current_mode1].next[0];
+				off();
         // reads next input
-        
+        speed =4;
         char_input = UART1_InChar();
-
-    //     while next input isn't valid:
-    //    while(char_input != 0x55 || char_input != 0x53 || char_input != 0x46 || char_input != 0x42 || char_input != 0x4C || char_input != 0x52 || char_input != 0x44){
-    //        char_input = UART1_InChar(); // keep reading inputs
-    //    } 
         
     }
     current_mode1 = demo_mode_fsm[current_mode1].next[0];
 
 }
 
-
+// @brief: Handles the way mode 2 handles inputs (State machine)
+// Loops inside the function (Based on mode 1 or mode 2)
 void mode_two_manager(void){
     
     uint8_t char_input = UART1_InChar();
-
-    // if (!SW1_PRESSED){ //check if SW1_PRESSED if so indication to exit and switch to mode 1
-    //     current_mode1 = demo_mode_fsm[current_mode1].next[0];
-    //     //other major value resets
-    //     return;
-    // }
 
     while(SW1_PRESSED){
         switch(char_input){ //check for the read char value from the Bluetooth
@@ -180,7 +155,7 @@ void mode_two_manager(void){
             break;
             case 0x55: // if char 'U' in speed up state
                 current_mode2 = drive_mode_fsm[current_mode2].next[5];
-                if(speed < 15) {
+                if(speed < 6) {
                     speed++;
                     }
                     if (current_mode2 == 3) {
@@ -196,169 +171,130 @@ void mode_two_manager(void){
             case 0x44: // if char 'D' in speed down state
                 current_mode2 = drive_mode_fsm[current_mode2].next[6];
                 if(speed > 1){
-                    speed--;
-                }
-                if (current_mode2 == 3){
-                    PWM_Duty(speed * DEFAULT_DUTY/2, speed * DEFAULT_DUTY);
-                }
-                else if (current_mode2 == 4){
-                    PWM_Duty(speed * DEFAULT_DUTY, speed * DEFAULT_DUTY/2);
-                }
-                else{
-                    PWM_Duty(speed * DEFAULT_DUTY, speed * DEFAULT_DUTY);
-                }
+                   speed--;
+                
+									if (current_mode2 == 3){
+											PWM_Duty(speed * DEFAULT_DUTY/2, speed * DEFAULT_DUTY);
+									}
+									else if (current_mode2 == 4){
+											PWM_Duty(speed * DEFAULT_DUTY, speed * DEFAULT_DUTY/2);
+									}
+									else{
+											PWM_Duty(speed * DEFAULT_DUTY, speed * DEFAULT_DUTY);
+									}
+								}
             break;            
         }
         // reads next input
         char_input = UART1_InChar();
-
-        // while next input isn't valid:
-        while(char_input != 0x55 || char_input != 0x53 || char_input != 0x46 || char_input != 0x42 || char_input != 0x4C || char_input != 0x52 || char_input != 0x44){
-            char_input = UART1_InChar(); // keep reading inputs
-						if (!SW1_PRESSED){
-							return;
-						}
-        } 
     }
     current_mode2 = demo_mode_fsm[current_mode1].next[0];
 }
 
-
-
-
-
+// @brief: does an 8 on the floor
 void figure8_operation(void){
-    
-    for(int i = 0; i <= 16000000; i++){ 
-        PWM_Duty(speed * DEFAULT_DUTY, speed * DEFAULT_DUTY); 
-        on();
-        forward();    //MOVE FORWARD
-    }
-
-    for(int i = 0; i <= 16000000; i++){
         PWM_Duty(speed * DEFAULT_DUTY, speed/2 * DEFAULT_DUTY); 
         on();
         forward();   
-    }
-
-    for(int i = 0; i <= 16000000; i++){ 
-        PWM_Duty(speed * DEFAULT_DUTY, speed * DEFAULT_DUTY); 
-        on();
-        forward();    //MOVE FORWARD
-    }
+    		for(unsigned long long i = 0; i <= 1210000; i++){}
 
 
-    for(int i = 0; i <= 16000000; i++){
-        PWM_Duty(speed * DEFAULT_DUTY, speed/2 * DEFAULT_DUTY); 
+
+        PWM_Duty(speed/2 * DEFAULT_DUTY, speed * DEFAULT_DUTY); 
         on();
         forward();    
-    }
-
-    // for(int i = 0; i <= 16000000; i++){ 
-    //     PWM_Duty(speed * DEFAULT_DUTY, speed * DEFAULT_DUTY); 
-    //     on();
-    //     forward();    //MOVE FORWARD
-    // }
+    		for(unsigned long long i = 0; i <= 1210000; i++){}
 
     current_mode1 = demo_mode_fsm[current_mode1].next[0];
 }
 
+// @brief: Does a circle (ends where it starts)
 void circle_operation(void){
-
-    for(int i = 0; i <= 16000000; i++){
-        PWM_Duty(speed * DEFAULT_DUTY, speed/2 * DEFAULT_DUTY); 
-        on();
-        forward();   
-    }
+		PWM_Duty(speed * DEFAULT_DUTY, speed/2 * DEFAULT_DUTY); 
+		on();
+		forward();   
+		for(unsigned long long i = 0; i <= 1210000; i++){}
 
     current_mode1 = demo_mode_fsm[current_mode1].next[0];
-
+		off();
 }
 
+// @brief: Does a square shape (ends where it starts)
 void square_operation(void){
+		PWM_Duty(speed * DEFAULT_DUTY, speed * DEFAULT_DUTY); 
+		on();
+		forward();    //MOVE FORWARD
+		for(unsigned long long i = 0; i <= 1800000/2; i++){}
 
-    for(int i = 0; i <= 16000000; i++){
-        PWM_Duty(speed * DEFAULT_DUTY, speed * DEFAULT_DUTY); 
-        on();
-        forward();    //MOVE FORWARD
-    }
+		PWM_Duty(speed * DEFAULT_DUTY, speed * DEFAULT_DUTY); 
+		on();
+		pivot_left();   
+		for(unsigned long long i = 0; i <= 1800000/7; i++){}
+    
+		
+		PWM_Duty(speed * DEFAULT_DUTY, speed * DEFAULT_DUTY); 
+		on();
+		forward();    //MOVE FORWARD
+		for(unsigned long long i = 0; i <= 1800000/2; i++){}
 
-    for(int i = 0; i <= 8000000; i++){
-        PWM_Duty(speed * DEFAULT_DUTY, speed/2 * DEFAULT_DUTY); 
-        on();
-        forward();   
-    }
+		PWM_Duty(speed * DEFAULT_DUTY, speed * DEFAULT_DUTY); 
+		on();
+		pivot_left();   
+		for(unsigned long long i = 0; i <= 1800000/7; i++){}
 
-    for(int i = 0; i <= 16000000; i++){
-        PWM_Duty(speed * DEFAULT_DUTY, speed * DEFAULT_DUTY); 
-        on();
-        forward();    //MOVE FORWARD
-    }
+		
+		PWM_Duty(speed * DEFAULT_DUTY, speed * DEFAULT_DUTY); 
+		on();
+		forward();    //MOVE FORWARD
+		for(unsigned long long i = 0; i <= 1800000/2; i++){}
 
-    for(int i = 0; i <= 8000000; i++){
-        PWM_Duty(speed * DEFAULT_DUTY, speed/2 * DEFAULT_DUTY); 
-        on();
-        forward();   
-    }
+		PWM_Duty(speed * DEFAULT_DUTY, speed * DEFAULT_DUTY); 
+		on();
+		pivot_left();  
+		for(unsigned long long i = 0; i <= 1800000/7; i++){}
 
-    for(int i = 0; i <= 16000000; i++){
-        PWM_Duty(speed * DEFAULT_DUTY, speed * DEFAULT_DUTY); 
-        on();
-        forward();    //MOVE FORWARD
-    }
+		
+		PWM_Duty(speed * DEFAULT_DUTY, speed * DEFAULT_DUTY); 
+		on();
+		forward();    //MOVE FORWARD
+		for(unsigned long long i = 0; i <= 1800000/2; i++){}
 
-    for(int i = 0; i <= 8000000; i++){
-        PWM_Duty(speed * DEFAULT_DUTY, speed/2 * DEFAULT_DUTY); 
-        on();
-        forward();   
-    }
 
-    for(int i = 0; i <= 16000000; i++){
-        PWM_Duty(speed * DEFAULT_DUTY, speed * DEFAULT_DUTY); 
-        on();
-        forward();    //MOVE FORWARD
-    }
-
-    for(int i = 0; i <= 8000000; i++){
-        PWM_Duty(speed * DEFAULT_DUTY, speed/2 * DEFAULT_DUTY); 
-        on();
-        forward();   
-    }
+		PWM_Duty(speed * DEFAULT_DUTY, speed * DEFAULT_DUTY); 
+			on();
+		pivot_left();  
+		for(unsigned long long i = 0; i <= 1800000/7; i++){}
 
     current_mode1 = demo_mode_fsm[current_mode1].next[0];
 }
 
+// @brief: Does a Z shape
 void zigzag_operation(void){
     
-    for(int i = 0; i <= 16000000; i++){
         PWM_Duty(speed * DEFAULT_DUTY, speed * DEFAULT_DUTY); 
         on();
         forward();
-    }
+    for(unsigned long long i = 0; i <= 1800000/2; i++){}
 
-    for(int i = 0; i <= 24000000; i++){
-        PWM_Duty(speed * DEFAULT_DUTY, speed/2 * DEFAULT_DUTY); 
+        PWM_Duty(speed * DEFAULT_DUTY, speed * DEFAULT_DUTY); 
         on();
-        forward();   
-    }
+        pivot_left();   
+    for(unsigned long long i = 0; i <= 1800000/7; i++){}
 
-    for(int i = 0; i <= 16000000; i++){
         PWM_Duty(speed * DEFAULT_DUTY, speed * DEFAULT_DUTY); 
         on();
         forward();
-    }
+    for(unsigned long long i = 0; i <= 1800000/2; i++){}
 
-    for(int i = 0; i <= 24000000; i++){
-        PWM_Duty(speed * DEFAULT_DUTY, speed/2 * DEFAULT_DUTY); 
+        PWM_Duty(speed * DEFAULT_DUTY, speed * DEFAULT_DUTY); 
         on();
-        forward();   
-    }
+        pivot_right();   
+    for(unsigned long long i = 0; i <= 1800000/7; i++){}
 
-    for(int i = 0; i <= 16000000; i++){
         PWM_Duty(speed * DEFAULT_DUTY, speed * DEFAULT_DUTY); 
         on();
         forward();
-    }
+    for(unsigned long long i = 0; i <= 1800000/2; i++){}
 
     current_mode1 = demo_mode_fsm[current_mode1].next[0];
 

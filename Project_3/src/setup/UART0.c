@@ -7,8 +7,9 @@
 // By Min He,10/11/2022
 
 #include <stdint.h>
-#include "tm4c123gh6pm.h"
+#include "../tm4c123gh6pm.h"
 #include "UART0.h"
+#include "../common/drivers/UART1.h"
 
 extern bool userFinished;
 
@@ -27,13 +28,13 @@ void UART0_Init(void){
   UART0_FBRD_R = 23;                    // FBRD = round(3611111 * 64) = 27
                                         // 8 bit word length (no parity bits, one stop bit, FIFOs)
   UART0_LCRH_R = (UART_LCRH_WLEN_8|UART_LCRH_FEN);
-  UART0_CTL_R |= 0x301;                 // enable UART for both Rx and Tx
+  UART0_CTL_R |= UART0_CTL_RX_TX;                 // enable UART for both Rx and Tx
 
-  GPIO_PORTA_AFSEL_R |= 0x03;           // enable alt funct on PA1,PA0
-  GPIO_PORTA_DEN_R |= 0x03;             // enable digital I/O on PA1,PA0
+  GPIO_PORTA_AFSEL_R |= PORT01_PINS;           // enable alt funct on PA1,PA0
+  GPIO_PORTA_DEN_R |= PORT01_PINS;             // enable digital I/O on PA1,PA0
                                         // configure PA1,PA0 as UART0
-  GPIO_PORTA_PCTL_R = (GPIO_PORTA_PCTL_R&0xFFFFFF00)+0x00000011;
-  GPIO_PORTA_AMSEL_R &= ~0x03;          // disable analog functionality on PA1,PA0
+  GPIO_PORTA_PCTL_R = (GPIO_PORTA_PCTL_R&PORT01_CLEAR_PCTL)+PORT01_SET_PCTL;
+  GPIO_PORTA_AMSEL_R &= ~PORT01_PINS;          // disable analog functionality on PA1,PA0
 }
 
 //------------UART0_OutChar------------

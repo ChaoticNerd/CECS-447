@@ -11,22 +11,25 @@
 #include "../../tm4c123gh6pm.h"
 //////////////////////2. Declarations Section////////////////////////////////
 									////////// Constants //////////
-//#define WHEEL_DIR (*((volatile unsigned long *)0x40005330)) // PB7632 are the four direction pins for L298
-
 // Constant definitions based on the following hardware interface:
 // System clock is 16MHz.
 // TOTAL PERIOD 100
 // 20 30 50
 #define TOTAL_PERIOD 100 //  16MHz/1000=16000
+#define PORT01_PINS 0x03
+#define PORT01_CLEAR_PCTL 0x000000FF
+#define PORT01_SET_PCTL 0x00000044
 
+#define PWM0_3_CTL 0x00000002
+#define PWM0_3_GENA 0xC8
+#define PWM0_3_GENB 0xC08
+
+#define SYSCTL_RCGCPWM0 0x01
+#define SYSCTL_RCC_NO_DIV 0x00100000
+
+#define EN_PWM0_3 0x00000001
 // PB7632 are used for direction control on L298.
 // Motor 1 is connected to the left wheel, Motor 2 is connected to the right wheel.
-// #define BACKWARD 0x88 			// 10XX10	
-// #define FORWARD 0xCC 		// 11XX11
-// #define RIGHTPIVOT 0xC8 		// 11XX10
-// #define LEFTPIVOT 0x8C 	// 10XX11
-
-// Bit masking for init
 
 
 //Wheels 
@@ -39,10 +42,6 @@
 // Inputs: None
 // Outputs: None
 // Description: 
-//	Initializes the PWM module 1 signals tied to PF321 on the Tiva Launchpad 
-//		to allow for changing brightness of LEDs based on vehicle speed.
-//	Initializes the PWM module 0 signals tied to PB76 to be used with the 
-//		L298N motor driver allowing for a variable speed of robot car.
 void PWM1_PD01_Init(void);
 
 // Dependency: PWM_PB76_Init()
