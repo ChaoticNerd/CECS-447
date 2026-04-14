@@ -136,6 +136,8 @@ void UART_OutString(char *pt){
   }
 }
 
+
+
 #define MAX_RECV_BUFF_SIZE  1024
 #define MAX_SEND_BUFF_SIZE  512
 #define MAX_HOSTNAME_SIZE   40
@@ -295,9 +297,9 @@ int main(void){
 				
 				// process received weather information
 				/* find ticker name in response*/
-				pt = strstr(Recvbuff, "\"name\"");
+				pt = strstr(Recvbuff, "\"name\""); // locate substring in string
 				i = 0; 
-				if( NULL != pt ){
+				if( NULL != pt ){ 
 					pt = pt + 8; // skip over "name":"
 					while((i<MAXLEN)&&(*pt)&&(*pt!='\"')){
 						City[i] = *pt; // copy into City string
