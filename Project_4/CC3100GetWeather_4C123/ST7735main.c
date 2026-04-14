@@ -96,9 +96,11 @@ Port A, SSI0 (PA2, PA3, PA5, PA6, PA7) sends data to Nokia5110 LCD
 #include "bmps.h"
 
 // To Do: replace the following three lines with your access point information
-#define SSID_NAME  "MinHeWiFi" /* Access point name to connect to */
+//#define SSID_NAME  "NEPTUNE 5813" /* Access point name to connect to */
+#define SSID_NAME "Ratnet"
 #define SEC_TYPE   SL_SEC_TYPE_WPA
-#define PASSKEY    "01234567"  /* Password in case of secure AP */ 
+//#define PASSKEY    "g9L925[6"  /* Password in case of secure AP */ 
+#define PASSKEY "poolSi5e"
 #define MAXLEN 100
 
 //------------UART_Init------------
@@ -231,7 +233,8 @@ void Crash(uint32_t time){
 // 1) change Austin Texas to your city
 // 2) metric(for celsius), imperial(for fahrenheit)
 // api.openweathermap.org/data/2.5/weather?q={city name},{state code}&appid={API key}
-#define REQUEST "GET /data/2.5/weather?q=Long%20Beach&APPID=7907b2abac2053aed180a74b9310b119&units=metric HTTP/1.1\r\nUser-Agent: Keil\r\nHost:api.openweathermap.org\r\nAccept: */*\r\n\r\n"
+//#define REQUEST "GET /data/2.5/weather?q=Long%20Beach&APPID=7907b2abac2053aed180a74b9310b119&units=metric HTTP/1.1\r\nUser-Agent: Keil\r\nHost:api.openweathermap.org\r\nAccept: */*\r\n\r\n"
+#define REQUEST "GET /data/2.5/weather?q=Long%20Beach&APPID=e5bcd4884f0aec35871463d10fa53ad5&units=metric HTTP/1.1\r\nUser-Agent: Keil\r\nHost:api.openweathermap.org\r\nAccept: /\r\n\r\n"
 // 1) go to http://openweathermap.org/appid#use 
 // 2) Register on the Sign up page
 // 3) get an API key (APPID) replace the 7907b2abac2053aed180a74b9310b119 with your APPID
