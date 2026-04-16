@@ -181,9 +181,17 @@ char character;
 			//continue;
 		}
     else if(length < max){
-      *bufPt = character;
-      bufPt++;
-      length++;
+      if (character == (char) 32) { // this is a space btw
+        *(bufPt++) = '%';
+        *(bufPt++) = '2';
+        *(bufPt++) = '0';
+        length += 3;
+      }
+      else {
+        *bufPt = character;
+        bufPt++;
+        length++;
+      }
       //UART0_OutChar(character);
     }
     character = UART0_InChar();
