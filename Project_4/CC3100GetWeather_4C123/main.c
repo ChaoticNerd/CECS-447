@@ -217,7 +217,7 @@ char character;
 #define MAX_HOSTNAME_SIZE   40
 #define MAX_PASSKEY_SIZE    32
 #define MAX_SSID_SIZE       32
-char userInput[MAX_SEND_BUFF_SIZE];
+char userInput[MAX_SEND_BUFF_SIZE]; // im crying bruh there is a send buffer that exsts already
 
 const char BASIC_LINK[] = "GET data/2.5/";
 const char CITY_NAME[] = "direct?q=";
@@ -273,7 +273,7 @@ typedef struct{
  */
 
 char Recvbuff[MAX_RECV_BUFF_SIZE];
-char SendBuff[MAX_SEND_BUFF_SIZE];
+char SendBuff[MAX_SEND_BUFF_SIZE]; // THIS IS THE SEND BUFFER IF U WANNA REPLACE
 char HostName[MAX_HOSTNAME_SIZE];
 unsigned long DestinationIP;
 int SockID;
