@@ -38,45 +38,66 @@ int main(void){
 	
 	// DRAW THE GROUND
 	ST7735_FillScreen(ST7735_CYAN);
-	ST7735_FillRect(0, 150,128, 30, ST7735_GREEN);
-	  
-	// DRAW THE SUN
-	ST7735_FillCircle(100, 30, 15,ST7735_YELLOW);
+	ST7735_FillRect(0, 0, 42, 160, ST7735_PINK);
+	ST7735_FillRect(85,0, 42, 160, ST7735_PINK);
+	ST7735_FillRect(42,0, 42, 160, ST7735_DEMURPLE);
+	
+	//DRAW THE FLOWER???
+	ST7735_DrawLine(48,80,63,65, ST7735_LAVENDAR);
+	ST7735_DrawLine(63,65,78,80, ST7735_LAVENDAR);
+	ST7735_DrawLine(78,80,63,95, ST7735_LAVENDAR);
+	ST7735_DrawLine(63,95,48,80, ST7735_LAVENDAR);
+
+	ST7735_FillCircle(63, 80, 8,ST7735_GOLD);
 	
 	// test some driver functions
-	ST7735_DrawChar(0,0,'A',ST7735_RED,ST7735_GREEN, 3);
+	//idfk if this is too much at this point
+	ST7735_SetTextSize(1);
+	ST7735_SetTextColor(ST7735_LAVENDAR);
+	ST7735_OutClearString("IM FINE\n\r");
+	ST7735_SetTextSize(2);
+	ST7735_SetTextColor(ST7735_CYAN);
+	ST7735_OutClearString("I WONT LOSE\n\r");
+	ST7735_SetTextSize(3);
+	ST7735_SetTextColor(ST7735_GREEN);
+	ST7735_OutClearString("MY MIND\n\r");
+	ST7735_SetTextSize(2);
+	ST7735_OutClearString("AH HELL NA\n\r");
+	
+//	ST7735_DrawChar(0,0,'A',ST7735_RED,ST7735_GREEN, 3);
+	//ST7735_DrawClearString(0,0,"IM FINE\n\r I WONT LOSE\n\r MY MIND",ST7735_WHITE);
 	
   while(1){
-		// DRAW THE MAN
-		ST7735_XYPlotMan( x, l, h, ST7735_RED);		
-		DelayWait10ms(10);
-			
-		// REMOVE THE MAN
-		ST7735_XYPlotMan( x, l, h, ST7735_CYAN);
-	 
-		// MOVE THE COORDINATES OF THE MAN
-		x++;
-	 
-		// CODE for MOVING the LEG
-		l--;
-		if (l == -15)
-				l = 15;
-	 
-		// CODE for MOVING the HAND    
-		if (ht == 1)
-				h++;
-		else
-				h--;
-	 
-		if (h == 15)
-			 ht = 0;
-		else if (h == -15)   
-			ht = 1;
-	 
-		//Reset parameters
-		if(x>170){
-			x = 40, ht = 0,l = 15, h = 15;
-		}
+//		// DRAW THE MAN
+//		ST7735_XYPlotMan( x, l, h, ST7735_RED);		
+//		DelayWait10ms(10);
+//			
+//		// REMOVE THE MAN
+//		ST7735_XYPlotMan( x, l, h, ST7735_CYAN);
+//	 
+//		// MOVE THE COORDINATES OF THE MAN
+//		x++;
+//	 
+//		// CODE for MOVING the LEG
+//		l--;
+//		if (l == -15)
+//				l = 15;
+//	 
+//		// CODE for MOVING the HAND    
+//		if (ht == 1)
+//				h++;
+//		else
+//				h--;
+//	 
+//		if (h == 15)
+//			 ht = 0;
+//		else if (h == -15)   
+//			ht = 1;
+//	 
+//		//Reset parameters
+//		if(x>170){
+//			x = 40, ht = 0,l = 15, h = 15;
+//		}
 	}
 } 
 

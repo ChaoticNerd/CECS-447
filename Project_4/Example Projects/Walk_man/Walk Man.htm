@@ -3,11 +3,11 @@
 <title>Static Call Graph - [.\Walk Man.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Walk Man.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6240002: Last Updated: Mon Apr 13 13:26:47 2026
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6240002: Last Updated: Wed Apr 15 23:33:56 2026
 <BR><P>
-<H3>Maximum Stack Usage =        128 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        152 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-main &rArr; ST7735_XYPlotMan &rArr; ST7735_DrawCircle &rArr; setAddrWindow
+main &rArr; ST7735_OutClearString &rArr; ST7735_OutClearChar &rArr; ST7735_DrawClearCharS &rArr; ST7735_FillRect &rArr; setAddrWindow
 <P>
 <H3>
 Functions with no stack information
@@ -581,7 +581,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Handler
 </UL>
 
-<P><STRONG><a name="[8d]"></a>_main_stk</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry2.o(.ARM.Collect$$$$00000001))
+<P><STRONG><a name="[8f]"></a>_main_stk</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry2.o(.ARM.Collect$$$$00000001))
 
 <P><STRONG><a name="[7e]"></a>_main_scatterload</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry5.o(.ARM.Collect$$$$00000004))
 <BR><BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
@@ -591,15 +591,15 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
 </UL>
 
-<P><STRONG><a name="[8e]"></a>_main_clock</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry7b.o(.ARM.Collect$$$$00000008))
+<P><STRONG><a name="[90]"></a>_main_clock</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry7b.o(.ARM.Collect$$$$00000008))
 
-<P><STRONG><a name="[8f]"></a>_main_cpp_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry8b.o(.ARM.Collect$$$$0000000A))
+<P><STRONG><a name="[91]"></a>_main_cpp_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry8b.o(.ARM.Collect$$$$0000000A))
 
-<P><STRONG><a name="[90]"></a>_main_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry9a.o(.ARM.Collect$$$$0000000B))
+<P><STRONG><a name="[92]"></a>_main_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry9a.o(.ARM.Collect$$$$0000000B))
 
-<P><STRONG><a name="[91]"></a>__rt_final_cpp</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry10a.o(.ARM.Collect$$$$0000000D))
+<P><STRONG><a name="[93]"></a>__rt_final_cpp</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry10a.o(.ARM.Collect$$$$0000000D))
 
-<P><STRONG><a name="[92]"></a>__rt_final_exit</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry11a.o(.ARM.Collect$$$$0000000F))
+<P><STRONG><a name="[94]"></a>__rt_final_exit</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry11a.o(.ARM.Collect$$$$0000000F))
 
 <P><STRONG><a name="[7f]"></a>__scatterload</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, init.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main_after_scatterload
@@ -607,126 +607,136 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_main_scatterload
 </UL>
 
-<P><STRONG><a name="[93]"></a>__scatterload_rt2</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, init.o(.text), UNUSED)
+<P><STRONG><a name="[95]"></a>__scatterload_rt2</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, init.o(.text), UNUSED)
 
 <P><STRONG><a name="[8c]"></a>PLL_Init</STRONG> (Thumb, 106 bytes, Stack size 0 bytes, pll.o(.text.PLL_Init))
 <BR><BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[81]"></a>ST7735_DrawChar</STRONG> (Thumb, 344 bytes, Stack size 48 bytes, st7735.o(.text.ST7735_DrawChar))
-<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = ST7735_DrawChar &rArr; setAddrWindow
+<P><STRONG><a name="[81]"></a>ST7735_DrawClearCharS</STRONG> (Thumb, 350 bytes, Stack size 64 bytes, st7735.o(.text.ST7735_DrawClearCharS))
+<BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = ST7735_DrawClearCharS &rArr; ST7735_FillRect &rArr; setAddrWindow
 </UL>
-<BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setAddrWindow
+<BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_FillRect
+<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setAddrWindow
 </UL>
-<BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-</UL>
-
-<P><STRONG><a name="[83]"></a>ST7735_DrawCircle</STRONG> (Thumb, 1546 bytes, Stack size 64 bytes, st7735.o(.text.ST7735_DrawCircle))
-<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = ST7735_DrawCircle &rArr; setAddrWindow
-</UL>
-<BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setAddrWindow
-</UL>
-<BR>[Called By]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_XYPlotMan
+<BR>[Called By]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_OutClearChar
 </UL>
 
 <P><STRONG><a name="[84]"></a>ST7735_DrawLine</STRONG> (Thumb, 436 bytes, Stack size 56 bytes, st7735.o(.text.ST7735_DrawLine))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = ST7735_DrawLine &rArr; setAddrWindow
 </UL>
-<BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setAddrWindow
+<BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setAddrWindow
 </UL>
-<BR>[Called By]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_XYPlotMan
+<BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
 <P><STRONG><a name="[85]"></a>ST7735_FillCircle</STRONG> (Thumb, 854 bytes, Stack size 72 bytes, st7735.o(.text.ST7735_FillCircle))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = ST7735_FillCircle &rArr; setAddrWindow
 </UL>
-<BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setAddrWindow
+<BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setAddrWindow
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[86]"></a>ST7735_FillRect</STRONG> (Thumb, 180 bytes, Stack size 24 bytes, st7735.o(.text.ST7735_FillRect))
+<P><STRONG><a name="[82]"></a>ST7735_FillRect</STRONG> (Thumb, 180 bytes, Stack size 24 bytes, st7735.o(.text.ST7735_FillRect))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = ST7735_FillRect &rArr; setAddrWindow
 </UL>
-<BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setAddrWindow
+<BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setAddrWindow
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_DrawClearCharS
 </UL>
 
-<P><STRONG><a name="[87]"></a>ST7735_FillScreen</STRONG> (Thumb, 136 bytes, Stack size 32 bytes, st7735.o(.text.ST7735_FillScreen))
+<P><STRONG><a name="[86]"></a>ST7735_FillScreen</STRONG> (Thumb, 136 bytes, Stack size 32 bytes, st7735.o(.text.ST7735_FillScreen))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = ST7735_FillScreen &rArr; setAddrWindow
 </UL>
-<BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setAddrWindow
+<BR>[Calls]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setAddrWindow
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[88]"></a>ST7735_InitR</STRONG> (Thumb, 298 bytes, Stack size 24 bytes, st7735.o(.text.ST7735_InitR))
+<P><STRONG><a name="[87]"></a>ST7735_InitR</STRONG> (Thumb, 298 bytes, Stack size 24 bytes, st7735.o(.text.ST7735_InitR))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = ST7735_InitR &rArr; commonInit &rArr; commandList
 </UL>
-<BR>[Calls]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;commandList
-<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setAddrWindow
-<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;commonInit
+<BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;commandList
+<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setAddrWindow
+<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;commonInit
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[8b]"></a>ST7735_XYPlotMan</STRONG> (Thumb, 116 bytes, Stack size 32 bytes, walking.o(.text.ST7735_XYPlotMan))
-<BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = ST7735_XYPlotMan &rArr; ST7735_DrawCircle &rArr; setAddrWindow
+<P><STRONG><a name="[8a]"></a>ST7735_OutClearChar</STRONG> (Thumb, 314 bytes, Stack size 32 bytes, st7735.o(.text.ST7735_OutClearChar))
+<BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = ST7735_OutClearChar &rArr; ST7735_DrawClearCharS &rArr; ST7735_FillRect &rArr; setAddrWindow
 </UL>
-<BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_DrawLine
-<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_DrawCircle
+<BR>[Calls]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_DrawClearCharS
+</UL>
+<BR>[Called By]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_OutClearString
+</UL>
+
+<P><STRONG><a name="[8b]"></a>ST7735_OutClearString</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, st7735.o(.text.ST7735_OutClearString))
+<BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = ST7735_OutClearString &rArr; ST7735_OutClearChar &rArr; ST7735_DrawClearCharS &rArr; ST7735_FillRect &rArr; setAddrWindow
+</UL>
+<BR>[Calls]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_OutClearChar
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[7c]"></a>main</STRONG> (Thumb, 206 bytes, Stack size 16 bytes, st7735walk_man.o(.text.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = main &rArr; ST7735_XYPlotMan &rArr; ST7735_DrawCircle &rArr; setAddrWindow
+<P><STRONG><a name="[8e]"></a>ST7735_SetTextColor</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, st7735.o(.text.ST7735_SetTextColor))
+<BR><BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
-<BR>[Calls]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_XYPlotMan
-<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_DrawChar
-<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_FillRect
+
+<P><STRONG><a name="[8d]"></a>ST7735_SetTextSize</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, st7735.o(.text.ST7735_SetTextSize))
+<BR><BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[7c]"></a>main</STRONG> (Thumb, 224 bytes, Stack size 8 bytes, st7735walk_man.o(.text.main))
+<BR><BR>[Stack]<UL><LI>Max Depth = 152<LI>Call Chain = main &rArr; ST7735_OutClearString &rArr; ST7735_OutClearChar &rArr; ST7735_DrawClearCharS &rArr; ST7735_FillRect &rArr; setAddrWindow
+</UL>
+<BR>[Calls]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_SetTextSize
+<LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_SetTextColor
+<LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_OutClearString
+<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_FillRect
+<LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_DrawLine
 <LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_FillCircle
-<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_InitR
-<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_FillScreen
+<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_InitR
+<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_FillScreen
 <LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PLL_Init
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> entry9a.o(.ARM.Collect$$$$0000000B)
 </UL>
-<P><STRONG><a name="[94]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)
+<P><STRONG><a name="[96]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)
 
-<P><STRONG><a name="[95]"></a>__scatterload_null</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_null), UNUSED)
+<P><STRONG><a name="[97]"></a>__scatterload_null</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_null), UNUSED)
 
-<P><STRONG><a name="[96]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
+<P><STRONG><a name="[98]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 <P>
 <H3>
 Local Symbols
 </H3>
-<P><STRONG><a name="[89]"></a>commonInit</STRONG> (Thumb, 428 bytes, Stack size 20 bytes, st7735.o(.text.commonInit))
+<P><STRONG><a name="[88]"></a>commonInit</STRONG> (Thumb, 428 bytes, Stack size 20 bytes, st7735.o(.text.commonInit))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = commonInit &rArr; commandList
 </UL>
-<BR>[Calls]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;commandList
+<BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;commandList
 </UL>
-<BR>[Called By]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_InitR
+<BR>[Called By]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_InitR
 </UL>
 
-<P><STRONG><a name="[82]"></a>setAddrWindow</STRONG> (Thumb, 310 bytes, Stack size 16 bytes, st7735.o(.text.setAddrWindow))
+<P><STRONG><a name="[83]"></a>setAddrWindow</STRONG> (Thumb, 310 bytes, Stack size 16 bytes, st7735.o(.text.setAddrWindow))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = setAddrWindow
 </UL>
-<BR>[Called By]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_DrawChar
-<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_FillRect
+<BR>[Called By]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_DrawClearCharS
+<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_FillRect
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_DrawLine
 <LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_FillCircle
-<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_DrawCircle
-<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_InitR
-<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_FillScreen
+<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_InitR
+<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_FillScreen
 </UL>
 
-<P><STRONG><a name="[8a]"></a>commandList</STRONG> (Thumb, 168 bytes, Stack size 28 bytes, st7735.o(.text.commandList))
+<P><STRONG><a name="[89]"></a>commandList</STRONG> (Thumb, 168 bytes, Stack size 28 bytes, st7735.o(.text.commandList))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = commandList
 </UL>
-<BR>[Called By]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_InitR
-<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;commonInit
+<BR>[Called By]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ST7735_InitR
+<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;commonInit
 </UL>
 <P>
 <H3>

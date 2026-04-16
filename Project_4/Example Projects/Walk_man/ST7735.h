@@ -113,6 +113,11 @@ enum initRFlags{
 #define ST7735_YELLOW  0x07FF
 #define ST7735_WHITE   0xFFFF
 
+#define ST7735_PINK    	0xBC5F
+#define ST7735_LAVENDAR	0xC358
+#define ST7735_DEMURPLE	0xFF9F
+#define ST7735_GOLD  		0x6EBF 
+
 //------------ST7735_InitB------------
 // Initialization for ST7735B screens.
 // Input: none
@@ -243,6 +248,10 @@ void ST7735_DrawBitmap(int16_t x, int16_t y, const uint16_t *image, int16_t w, i
 // Output: none
 void ST7735_DrawCharS(int16_t x, int16_t y, char c, int16_t textColor, int16_t bgColor, uint8_t size);
 
+
+
+void ST7735_DrawClearCharS(int16_t x, int16_t y, char c, int16_t textColor, uint8_t size);
+
 //------------ST7735_DrawChar------------
 // Advanced character draw function.  This is similar to the function
 // from Adafruit_GFX.c but adapted for this processor.  However, this
@@ -268,7 +277,10 @@ void ST7735_DrawChar(int16_t x, int16_t y, char c, int16_t textColor, int16_t bg
 //        textColor 16-bit color of the characters
 // bgColor is Black and size is 1
 // Output: number of characters printed
-uint32_t ST7735_DrawString(uint16_t x, uint16_t y, char *pt, int16_t textColor);;
+uint32_t ST7735_DrawString(uint16_t x, uint16_t y, char *pt, int16_t textColor);
+
+
+uint32_t ST7735_DrawClearString(uint16_t x, uint16_t y, char *pt, int16_t textColor);;
 
 
 
@@ -422,6 +434,8 @@ void ST7735_PlotNextErase(void);
 // Outputs: none
 void ST7735_OutChar(char ch);
 
+void ST7735_OutClearChar(char ch);
+
 //********ST7735_OutString*****************
 // Print a string of characters to the ST7735 LCD.
 // Position determined by ST7735_SetCursor command
@@ -431,6 +445,8 @@ void ST7735_OutChar(char ch);
 // outputs: none
 void ST7735_OutString(char *ptr);
 
+void ST7735_OutClearString(char *ptr);
+
 // ************** ST7735_SetTextColor ************************
 // Sets the color in which the characters will be printed
 // Background color is fixed at black
@@ -438,6 +454,12 @@ void ST7735_OutString(char *ptr);
 // Output: none
 // ********************************************************
 void ST7735_SetTextColor(uint16_t color);
+
+
+
+void ST7735_SetTextSize(uint8_t);
+
+
 
 // *************** Output_Init ********************
 // Standard device driver initialization function for printf
