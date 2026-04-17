@@ -91,6 +91,7 @@ Port A, SSI0 (PA2, PA3, PA5, PA6, PA7) sends data to Nokia5110 LCD
 #include "application_commands.h"
 #include "LED.h"
 #include <string.h>
+#include "ST7735.h"
 #include "../inc/tm4c123gh6pm.h"
 
 #include <stdio.h>
@@ -340,7 +341,31 @@ int main(void){
   initClk();        // PLL 50 MHz
   UART_Init();      // Send data to PC, 115200 bps
   LED_Init();       // initialize LaunchPad I/O 
+	ST7735_InitR(INITR_REDTAB);
   
+	ST7735_FillRect(0, 0, 42, 160, ST7735_PINK);
+	ST7735_FillRect(85,0, 42, 160, ST7735_PINK);
+	ST7735_FillRect(42,0, 42, 160, ST7735_DEMURPLE);
+	
+	//DRAW THE FLOWER???
+	ST7735_DrawLine(48,80,63,65, ST7735_LAVENDAR);
+	ST7735_DrawLine(63,65,78,80, ST7735_LAVENDAR);
+	ST7735_DrawLine(78,80,63,95, ST7735_LAVENDAR);
+	ST7735_DrawLine(63,95,48,80, ST7735_LAVENDAR);
+
+	ST7735_FillCircle(63, 80, 8,ST7735_GOLD);
+	
+	
+	UART_OutString("Weather App\n\r");
+	ST7735_SetTextSize(3);
+	ST7735_SetTextColor(ST7735_LAVENDAR);
+	ST7735_OutClearString("WTHR\n");
+	
+	ST7735_SetTextSize(2);
+	ST7735_SetTextColor(ST7735_LAVENDAR);
+	ST7735_OutClearString("APP\n");
+	
+	
   UART_OutString("Weather App\n\r");
   retVal = configureSimpleLinkToDefaultState(pConfig); // set policies
   if(retVal < 0) Crash(4000000);
@@ -353,6 +378,15 @@ int main(void){
   while((0 == (g_Status&CONNECTED)) || (0 == (g_Status&IP_AQUIRED))){
     _SlNonOsMainLoopTask();
   }
+	
+
+	ST7735_SetTextSize(2);
+	ST7735_SetTextColor(ST7735_DARKORANGE);
+	ST7735_OutClearString("Connect\n\r\r\r");
+	
+	ST7735_SetTextSize(1);
+	ST7735_SetTextColor(ST7735_LIGHTORANGE);
+	
   UART_OutString("Connected\n\r");
   while(1){
     strcpy(HostName,"api.openweathermap.org");

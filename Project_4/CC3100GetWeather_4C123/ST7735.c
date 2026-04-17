@@ -59,6 +59,7 @@
 uint32_t StX=0; // position along the horizonal axis 0 to 20
 uint32_t StY=0; // position along the vertical axis 0 to 15
 uint16_t StTextColor = ST7735_YELLOW;
+uint8_t StTextSize = 0;
 
 #define swap(a, b) { int16_t t = a; a = b; b = t; }
 #define ST7735_NOP     0x00
@@ -1112,6 +1113,77 @@ void ST7735_DrawBitmap(int16_t x, int16_t y, const uint16_t *image, int16_t w, i
 }
 
 
+
+//------------ST7735_DrawClearBitmap------------
+// Displays a 16-bit color BMP image.  A bitmap file that is created
+// by a PC image processing program has a header and may be padded
+// with dummy columns so the data have four byte alignment.  This
+// function assumes that all of that has been stripped out, and the
+// array image[] has one 16-bit halfword for each pixel to be
+// displayed on the screen (encoded in reverse order, which is
+// standard for bitmap files).  An array can be created in this
+// format from a 24-bit-per-pixel .bmp file using the associated
+// converter program.
+// (x,y) is the screen location of the lower left corner of BMP image
+// Requires (11 + 2*w*h) bytes of transmission (assuming image fully on screen)
+// Input: x     horizontal position of the bottom left corner of the image, columns from the left edge
+//        y     vertical position of the bottom left corner of the image, rows from the top edge
+//        image pointer to a 16-bit color BMP image
+//        w     number of pixels wide
+//        h     number of pixels tall
+// Output: none
+// Must be less than or equal to 128 pixels wide by 160 pixels high
+void ST7735_DrawClearBitmap(int16_t x, int16_t y, const uint16_t *image, int16_t w, int16_t h){
+  int16_t skipC = 0;                      // non-zero if columns need to be skipped due to clipping
+  int16_t originalWidth = w;              // save this value; even if not all columns fit on the screen, the image is still this width in ROM
+  int i = w*(h - 1);
+
+  if((x >= _width) || ((y - h + 1) >= _height) || ((x + w) <= 0) || (y < 0)){
+    return;                             // image is totally off the screen, do nothing
+  }
+  if((w > _width) || (h > _height)){    // image is too wide for the screen, do nothing
+    //***This isn't necessarily a fatal error, but it makes the
+    //following logic much more complicated, since you can have
+    //an image that exceeds multiple boundaries and needs to be
+    //clipped on more than one side.
+    return;
+  }
+  if((x + w - 1) >= _width){            // image exceeds right of screen
+    skipC = (x + w) - _width;           // skip cut off columns
+    w = _width - x;
+  }
+  if((y - h + 1) < 0){                  // image exceeds top of screen
+    i = i - (h - y - 1)*originalWidth;  // skip the last cut off rows
+    h = y + 1;
+  }
+  if(x < 0){                            // image exceeds left of screen
+    w = w + x;
+    skipC = -1*x;                       // skip cut off columns
+    i = i - x;                          // skip the first cut off columns
+    x = 0;
+  }
+  if(y >= _height){                     // image exceeds bottom of screen
+    h = h - (y - _height + 1);
+    y = _height - 1;
+  }
+
+  setAddrWindow(x, y-h+1, x+w-1, y);
+
+  for(y=0; y<h; y=y+1){
+    for(x=0; x<w; x=x+1){
+                                        // send the top 8 bits
+      writedata((uint8_t)(image[i] >> 8));
+                                        // send the bottom 8 bits
+      writedata((uint8_t)image[i]);
+      i = i + 1;                        // go to the next pixel
+    }
+    i = i + skipC;
+    i = i - 2*originalWidth;
+  }
+}
+
+
+
 //------------ST7735_DrawCharS------------
 // Simple character draw function.  This is the same function from
 // Adafruit_GFX.c but adapted for this processor.  However, each call
@@ -1159,6 +1231,56 @@ void ST7735_DrawCharS(int16_t x, int16_t y, char c, int16_t textColor, int16_t b
     }
   }
 }
+
+
+//------------ST7735_DrawClearCharS------------
+// Simple character draw function.  This is the same function from
+// Adafruit_GFX.c but adapted for this processor.  However, each call
+// to ST7735_DrawPixel() calls setAddrWindow(), which needs to send
+// many extra data and commands.  If the background color is the same
+// as the text color, no background will be printed, and text can be
+// drawn right over existing images without covering them with a box.
+// Requires (11 + 2*size*size)*6*8 (image fully on screen; textcolor != bgColor)
+// Input: x         horizontal position of the top left corner of the character, columns from the left edge
+//        y         vertical position of the top left corner of the character, rows from the top edge
+//        c         character to be printed
+//        textColor 16-bit color of the character
+//        bgColor   16-bit color of the background
+//        size      number of pixels per character pixel (e.g. size==2 prints each pixel of font as 2x2 square)
+// Output: none
+void ST7735_DrawClearCharS(int16_t x, int16_t y, char c, int16_t textColor, uint8_t size){
+  uint8_t line; // vertical column of pixels of character in font
+  int32_t i, j;
+  if((x >= _width)            || // Clip right
+     (y >= _height)           || // Clip bottom
+     ((x + 5 * size - 1) < 0) || // Clip left
+     ((y + 8 * size - 1) < 0))   // Clip top
+    return;
+
+  for (i=0; i<6; i++ ) {
+    if (i == 5)
+      line = 0x0;
+    else
+      line = Font[(c*5)+i];
+    for (j = 0; j<8; j++) {
+      if (line & 0x1) {
+        if (size == 1) // default size
+          ST7735_DrawPixel(x+i, y+j, textColor);
+        else {  // big size
+          ST7735_FillRect(x+(i*size), y+(j*size), size, size, textColor);
+        }
+//      } else if (bgColor != textColor) {
+//        if (size == 1) // default size
+//          ST7735_DrawPixel(x+i, y+j, bgColor);
+//        else {  // big size
+//          ST7735_FillRect(x+i*size, y+j*size, size, size, bgColor);
+//        }
+      }
+      line >>= 1;
+    }
+  }
+}
+
 
 
 //------------ST7735_DrawChar------------
@@ -1227,6 +1349,31 @@ uint32_t ST7735_DrawString(uint16_t x, uint16_t y, char *pt, int16_t textColor){
   if(y>15) return 0;
   while(*pt){
     ST7735_DrawCharS(x*6, y*10, *pt, textColor, ST7735_BLACK, 1);
+    pt++;
+    x = x+1;
+    if(x>20) return count;  // number of characters printed
+    count++;
+  }
+  return count;  // number of characters printed
+}
+
+
+
+//------------ST7735_DrawClearString------------
+// String draw function.
+// 16 rows (0 to 15) and 21 characters (0 to 20)
+// Requires (11 + size*size*6*8) bytes of transmission for each character
+// Input: x         columns from the left edge (0 to 20)
+//        y         rows from the top edge (0 to 15)
+//        pt        pointer to a null terminated string to be printed
+//        textColor 16-bit color of the characters
+// bgColor is Black and size is 1
+// Output: number of characters printed
+uint32_t ST7735_DrawClearString(uint16_t x, uint16_t y, char *pt, int16_t textColor){
+  uint32_t count = 0;
+  if(y>15) return 0;
+  while(*pt){
+    ST7735_DrawClearCharS(x*6, y*10, *pt, textColor, 1);
     pt++;
     x = x+1;
     if(x>20) return count;  // number of characters printed
@@ -1629,6 +1776,33 @@ void ST7735_OutChar(char ch){
   }
   return;
 }
+
+
+// *************** ST7735_OutClearChar ********************
+// Output one character to the LCD
+// Position determined by ST7735_SetCursor command
+// Color set by ST7735_SetTextColor
+// Inputs: 8-bit ASCII character
+// Outputs: none
+void ST7735_OutClearChar(char ch){
+  if((ch == 10) || (ch == 13) || (ch == 27)){
+    StY++; StX=0;
+    if(StY>128/(6*StTextSize)){
+      StY = 0;
+    }
+    ST7735_DrawClearString(0,StY,"                     ",1);
+    return;
+  }
+  ST7735_DrawClearCharS(StX*6*StTextSize,StY*10*StTextSize,ch,StTextColor, StTextSize);
+  StX++;
+  if(StX>160/(10*StTextSize)  ){
+    StX = 20;
+    ST7735_DrawClearCharS(StX*6*StTextSize,StY*10*StTextSize,'*',StTextColor, StTextSize);
+  }
+  return;
+}
+
+
 //********ST7735_OutString*****************
 // Print a string of characters to the ST7735 LCD.
 // Position determined by ST7735_SetCursor command
@@ -1639,6 +1813,21 @@ void ST7735_OutChar(char ch){
 void ST7735_OutString(char *ptr){
   while(*ptr){
     ST7735_OutChar(*ptr);
+    ptr = ptr + 1;
+  }
+}
+
+
+//********ST7735_OutString*****************
+// Print a string of characters to the ST7735 LCD.
+// Position determined by ST7735_SetCursor command
+// Color set by ST7735_SetTextColor
+// The string will not automatically wrap.
+// inputs: ptr  pointer to NULL-terminated ASCII string
+// outputs: none
+void ST7735_OutClearString(char *ptr){
+  while(*ptr){
+    ST7735_OutClearChar(*ptr);
     ptr = ptr + 1;
   }
 }
@@ -1664,6 +1853,11 @@ int fgetc (FILE *f){
 int ferror(FILE *f){
   /* Your implementation of ferror */
   return EOF;
+}
+
+
+void ST7735_SetTextSize(uint8_t size){
+  StTextSize = size;
 }
 // Abstraction of general output device
 // Volume 2 section 3.4.5
