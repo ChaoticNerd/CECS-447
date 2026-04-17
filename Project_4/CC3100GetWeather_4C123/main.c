@@ -184,8 +184,11 @@ char character;
 		else if (character == (char) LF) {
 			//continue;
 		}
-    else if(length < max){
+    else if(length < max - 1){
       if (character == (char) 32) { // this is a space btw
+        if (length >= max) {
+          break;
+        }
         *(bufPt++) = '%';
         *(bufPt++) = '2';
         *(bufPt++) = '0';
@@ -206,12 +209,8 @@ char character;
 		//	break;
 		//}
   }
-	*bufPt = (char) CR;
-	bufPt++;
-	*bufPt = (char)LF;
-	bufPt++;
+	*bufPt = '\0';
 	userFinished = TRUE;
-  *bufPt = (char) 255;
 	return length;
 }
 
@@ -384,10 +383,11 @@ int main(void){
         UART_OutString("Latitude?\r\n");
       }
       uint16_t length = UART0_InString(userInput, MAX_SEND_BUFF_SIZE);
-      char userString[length];
+      char userString[length + 1];
       for (int i = 0; i < length; i++){
         userString[i] = userInput[i];
       }
+      userString[length] = '\0';
       // 
       // set q= or id= with case statement here?
       switch(c){
