@@ -93,6 +93,8 @@ Port A, SSI0 (PA2, PA3, PA5, PA6, PA7) sends data to Nokia5110 LCD
 #include <string.h>
 #include "../inc/tm4c123gh6pm.h"
 
+#include <stdio.h>
+
 // To Do: replace the following three lines with your access point information
 #define SSID_NAME  "Ratnet" /* Access point name to connect to */
 #define SEC_TYPE   SL_SEC_TYPE_WPA
@@ -105,11 +107,13 @@ Port A, SSI0 (PA2, PA3, PA5, PA6, PA7) sends data to Nokia5110 LCD
 #define BS   0x08
 #define SP   0x20
 
+bool userFinished = FALSE;
+
 void UART_Init(void);
 void UART_OutString(char *pt);
 char UART0_InChar(void);
-uint16_t UART0_InString(uint8_t *bufPt, uint16_t max);
-void clear_buffer(uint8_t *bufPt, uint16_t strLen);
+uint16_t UART0_InString(char *bufPt, uint16_t max);
+void clear_buffer(char *bufPt, uint16_t strLen);
 
 //------------UART_Init------------
 // Initialize the UART for 115,200 baud rate (assuming 50 MHz UART clock),
@@ -174,7 +178,7 @@ char character;
       if(length){
         bufPt--;
         length--;
-        UART0_OutChar(BS);
+        //UART0_OutChar(BS);
       }
     }
 		else if (character == (char) LF) {
@@ -206,7 +210,7 @@ char character;
 	bufPt++;
 	*bufPt = (char)LF;
 	bufPt++;
-	userFinished = true;
+	userFinished = TRUE;
   *bufPt = (char) 255;
 	return length;
 }
@@ -223,7 +227,7 @@ const char BASIC_LINK[] = "GET data/2.5/";
 const char CITY_NAME[] = "direct?q=";
 const char CITY_ID[] = "weather?id=";
 const char CO_ORDS_LAT[] = "reverse?lat=";
-const char CO_ORDS_LONG[] = "&lon="
+const char CO_ORDS_LONG[] = "&lon=";
 const char ZIP_CODE[] = "zip?zip=";
 const char API_KEY[] = "&appid=e5bcd4884f0aec35871463d10fa53ad5";
 #define SUCCESS             0
@@ -317,7 +321,7 @@ void Crash(uint32_t time){
 // 2) metric(for celsius), imperial(for fahrenheit)
 // api.openweathermap.org/data/2.5/weather?q={city name},{state code}&appid={API key}
 //#define REQUEST "GET /data/2.5/weather?q=Long%20Beach&APPID=e5bcd4884f0aec35871463d10fa53ad5&units=metric HTTP/1.1\r\nUser-Agent: Keil\r\nHost:api.openweathermap.org\r\nAccept: */*\r\n\r\n"
-const char REQUEST[] = "=metric HTTP/1.1\r\nUser-Agent: Keil\r\nHost:api.openweathermap.org\r\nAccept: */*\r\n\r\n"
+const char REQUEST[] = "=metric HTTP/1.1\r\nUser-Agent: Keil\r\nHost:api.openweathermap.org\r\nAccept: */*\r\n\r\n";
 
 // https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
 
@@ -377,27 +381,33 @@ int main(void){
       // im pretty sure this handles the while lloop alr
       // user input is stored in userInput
       if (c == '3') {
-        UART_OutString("Longitude?\r\n");
+        UART_OutString("Latitude?\r\n");
       }
-      uint16_t strlen = UART0_InString(userInput, MAX_SEND_BUFF_SIZE);
+      uint16_t length = UART0_InString(userInput, MAX_SEND_BUFF_SIZE);
+      char userString[length];
+      for (int i = 0; i < length; i++){
+        userString[i] = userInput[i];
+      }
       // 
       // set q= or id= with case statement here?
       switch(c){
         case '1': // city name
-          sprintf(strOut, "%s%s%s%s%s", BASIC_LINK, CITY_NAME, userInput, API_KEY, REQUEST);
+          sprintf(strOut, "%s%s%s%s%s", BASIC_LINK, CITY_NAME, userString, API_KEY, REQUEST);
+          UART_OutString(strOut);
           break;
         case '2': // city id
           sprintf(strOut, "%s%s%s%s%s", BASIC_LINK, CITY_ID, userInput, API_KEY, REQUEST);
           break;
-        case '3': // co-ords
+        case '3':{ // co-ords
           // REQUIRES WORK
           char tempStrHold[ MAX_SEND_BUFF_SIZE ];
           sprintf(tempStrHold, "%s%s%s", BASIC_LINK, CO_ORDS_LAT, userInput);
           // get another latitude input
-          UART_OutString("Latitude?\r\n");
-          strlen = UART0_InString(userInput, MAX_SEND_BUFF_SIZE);
+          UART_OutString("Longitude?\r\n");
+          length = UART0_InString(userInput, MAX_SEND_BUFF_SIZE);
           sprintf(strOut, "%s%s%s%s%s", tempStrHold, CO_ORDS_LONG, userInput, API_KEY, REQUEST);
           break;
+				}
         case '4': // zip code
           sprintf(strOut, "%s%s%s%s%s", BASIC_LINK, ZIP_CODE, userInput, API_KEY, REQUEST);
           break;
@@ -719,7 +729,7 @@ void SimpleLinkSockEventHandler(SlSockEvent_t *pSock){
 }
 
 
-void clear_buffer(uint8_t *bufPt, uint16_t strLen) {
+void clear_buffer(char *bufPt, uint16_t strLen) {
 	for(int i = 0; i < strLen; i++) {
 		bufPt[i] = (char) 255;
 	}

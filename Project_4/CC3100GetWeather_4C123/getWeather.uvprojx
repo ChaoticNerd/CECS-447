@@ -476,9 +476,9 @@
               <FilePath>..\driverlib\uart.c</FilePath>
             </File>
             <File>
-              <FileName>ST7735main.c</FileName>
+              <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\ST7735main.c</FilePath>
+              <FilePath>.\main.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -105,7 +105,6 @@ void mode_manager_MCU2(char user_input){
     }
 		ClearBuffer(rb_PC);
 }
-
 #endif
 
 int get_current_mode(void){
@@ -115,8 +114,6 @@ int get_current_mode(void){
 void set_current_mode(int new_mode){
     current_mode = (uint8_t) mode_fsm[current_mode].next[new_mode];
 }
-
-
 
 void reset_arrayInt(void) {
     for(int i = 0; i < BUFFER_SIZE; i++) {

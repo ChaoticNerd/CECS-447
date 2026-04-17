@@ -102,6 +102,27 @@ Port A, SSI0 (PA2, PA3, PA5, PA6, PA7) sends data to Nokia5110 LCD
 //#define PASSKEY    "g9L925[6"  /* Password in case of secure AP */ 
 #define PASSKEY "poolSi5e"
 #define MAXLEN 100
+#define MAX_RECV_BUFF_SIZE  1024
+#define MAX_SEND_BUFF_SIZE  512
+#define MAX_HOSTNAME_SIZE   40
+#define MAX_PASSKEY_SIZE    32
+#define MAX_SSID_SIZE       32
+
+void UART_Init(void);
+void UART_OutString(char *pt);
+char UART0_InChar(void);
+uint16_t UART0_InString(uint8_t *bufPt, uint16_t max);
+void clear_buffer(uint8_t *bufPt, uint16_t strLen);
+
+const char BASIC_LINK[] = "GET data/2.5/";
+const char CITY_NAME[] = "direct?q=";
+const char CITY_ID[] = "weather?id=";
+const char CO_ORDS_LAT[] = "reverse?lat=";
+const char CO_ORDS_LONG[] = "&lon=";
+const char ZIP_CODE[] = "zip?zip=";
+const char API_KEY[] = "&appid=e5bcd4884f0aec35871463d10fa53ad5";
+char userInput[MAX_SEND_BUFF_SIZE]; // im crying bruh there is a send buffer that exsts already
+
 
 //------------UART_Init------------
 // Initialize the UART for 115,200 baud rate (assuming 50 MHz UART clock),
@@ -232,35 +253,34 @@ void Crash(uint32_t time){
 /*
  * Application's entry point
  */
-// 1) change Austin Texas to your city
+// 1) change Long Beach to your city, change APPID to your APPID
 // 2) metric(for celsius), imperial(for fahrenheit)
 // api.openweathermap.org/data/2.5/weather?q={city name},{state code}&appid={API key}
-//#define REQUEST "GET /data/2.5/weather?q=Long%20Beach&APPID=7907b2abac2053aed180a74b9310b119&units=metric HTTP/1.1\r\nUser-Agent: Keil\r\nHost:api.openweathermap.org\r\nAccept: */*\r\n\r\n"
-#define REQUEST "GET /data/2.5/weather?q=Long%20Beach&APPID=e5bcd4884f0aec35871463d10fa53ad5&units=metric HTTP/1.1\r\nUser-Agent: Keil\r\nHost:api.openweathermap.org\r\nAccept: /\r\n\r\n"
+//#define REQUEST "GET /data/2.5/weather?q=Long%20Beach&APPID=e5bcd4884f0aec35871463d10fa53ad5&units=metric HTTP/1.1\r\nUser-Agent: Keil\r\nHost:api.openweathermap.org\r\nAccept: */*\r\n\r\n"
+const char REQUEST[] = "=metric HTTP/1.1\r\nUser-Agent: Keil\r\nHost:api.openweathermap.org\r\nAccept: */*\r\n\r\n";
+
+// https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
+
 // 1) go to http://openweathermap.org/appid#use 
 // 2) Register on the Sign up page
 // 3) get an API key (APPID) replace the 7907b2abac2053aed180a74b9310b119 with your APPID
 int main(void){
-	int32_t retVal;  
-	SlSecParams_t secParams;
+  int32_t retVal;  
+  SlSecParams_t secParams;
   char *pConfig = NULL; 
-	INT32 ASize = 0; 
-	SlSockAddrIn_t  Addr;
-	char *pt = NULL;
-	char City[MAXLEN];
-	char Temperature[MAXLEN];
-	char Weather[MAXLEN];
-	uint8_t i;
+  char *pt = NULL;
+  INT32 ASize = 0; 
+  SlSockAddrIn_t  Addr;
+  char strOut[ MAX_SEND_BUFF_SIZE ];
 
+  // SYSTEM INIT
   initClk();        // PLL 50 MHz
   UART_Init();      // Send data to PC, 115200 bps
   LED_Init();       // initialize LaunchPad I/O 
-	ST7735_InitR(INITR_REDTAB);
+  
   UART_OutString("Weather App\n\r");
-	ST7735_OutString("Weather App\n\r");
-	
   retVal = configureSimpleLinkToDefaultState(pConfig); // set policies
-  if(retVal < 0)Crash(4000000);
+  if(retVal < 0) Crash(4000000);
   retVal = sl_Start(0, pConfig, 0);
   if((retVal < 0) || (ROLE_STA != retVal) ) Crash(8000000);
   secParams.Key = PASSKEY;
@@ -271,13 +291,63 @@ int main(void){
     _SlNonOsMainLoopTask();
   }
   UART_OutString("Connected\n\r");
-  ST7735_OutString("Connected\n\r");
-	
   while(1){
     strcpy(HostName,"api.openweathermap.org");
     retVal = sl_NetAppDnsGetHostByName(HostName,
              strlen(HostName),&DestinationIP, SL_AF_INET);
+    // retVal checks website connection -- if no connection, loops attempt to connect
     if(retVal == 0){
+      // display menu
+
+      // just in case ig
+      clear_buffer(userInput, MAX_SEND_BUFF_SIZE);
+      // UART InChar loop -- while (c != 1,2,3,4)
+      char c = UART0_InChar();
+      while ((c != '1') && (c != '2') && (c != '3') && (c != '4')) {
+        c = UART0_InChar();
+      }
+      
+      // 1  = ascii 49
+      // once loop exit, type in:
+      // 1. city name
+      // 2. city id
+      // 3. coords
+      // 4. zip
+    
+      // im pretty sure this handles the while lloop alr
+      // user input is stored in userInput
+      if (c == '3') {
+        UART_OutString("Longitude?\r\n");
+      }
+      uint16_t strlen = UART0_InString(userInput, MAX_SEND_BUFF_SIZE);
+      // 
+      // set q= or id= with case statement here?
+      switch(c){
+        case '1': // city name
+          sprintf(strOut, "%s%s%s%s%s", BASIC_LINK, CITY_NAME, userInput, API_KEY, REQUEST);
+          UART_OutString(strOut);
+          break;
+        case '2': // city id
+          sprintf(strOut, "%s%s%s%s%s", BASIC_LINK, CITY_ID, userInput, API_KEY, REQUEST);
+          break;
+        case '3': // co-ords
+          // REQUIRES WORK
+          char tempStrHold[ MAX_SEND_BUFF_SIZE ];
+          sprintf(tempStrHold, "%s%s%s", BASIC_LINK, CO_ORDS_LAT, userInput);
+          // get another latitude input
+          UART_OutString("Latitude?\r\n");
+          strlen = UART0_InString(userInput, MAX_SEND_BUFF_SIZE);
+          sprintf(strOut, "%s%s%s%s%s", tempStrHold, CO_ORDS_LONG, userInput, API_KEY, REQUEST);
+          break;
+        case '4': // zip code
+          sprintf(strOut, "%s%s%s%s%s", BASIC_LINK, ZIP_CODE, userInput, API_KEY, REQUEST);
+          break;
+        default: // user enters some fuckshit and dies
+          break;  
+        
+      }
+
+      // and then boom display the info. #killeveryone
       Addr.sin_family = SL_AF_INET;
       Addr.sin_port = sl_Htons(80);
       Addr.sin_addr.s_addr = sl_Htonl(DestinationIP);// IP to big endian 
@@ -286,63 +356,16 @@ int main(void){
       if( SockID >= 0 ){
         retVal = sl_Connect(SockID, ( SlSockAddr_t *)&Addr, ASize);
       }
-      if((SockID >= 0)&&(retVal >= 0)){
-        strcpy(SendBuff,REQUEST); 
+
+      // this is successfully connect to website
+      if((SockID >= 0)&&(retVal >= 0)&&(strOut[0] == 'G')){
+        strcpy(SendBuff,strOut); 
         sl_Send(SockID, SendBuff, strlen(SendBuff), 0);// Send the HTTP GET 
         sl_Recv(SockID, Recvbuff, MAX_RECV_BUFF_SIZE, 0);// Receive response 
         sl_Close(SockID);
         LED_GreenOn();
         UART_OutString("\r\n\r\n");
         UART_OutString(Recvbuff);  UART_OutString("\r\n");
-				
-				// process received weather information
-				/* find ticker name in response*/
-				pt = strstr(Recvbuff, "\"name\""); // locate substring in string
-				i = 0; 
-				if( NULL != pt ){ 
-					pt = pt + 8; // skip over "name":"
-					while((i<MAXLEN)&&(*pt)&&(*pt!='\"')){
-						City[i] = *pt; // copy into City string
-						pt++; i++;    
-					}
-				}
-				City[i] = 0;
-
-				/* find Temperature Value in response */
-				pt = strstr(Recvbuff, "\"temp\"");
-				i = 0; 
-				if( NULL != pt ){
-					pt = pt + 7; // skip over "temp":
-					while((i<MAXLEN)&&(*pt)&&(*pt!='\"')){
-						Temperature[i] = *pt; // copy into Temperature string
-						pt++; 
-						i++;    
-					}
-				}
-				Temperature[i] = 0;
-
-				/* find weather in response */
-				pt = strstr(Recvbuff, "\"description\"");
-				i = 0; 
-				if( NULL != pt ){
-					pt = pt + 15; // skip over "description":"
-					while((i<MAXLEN)&&(*pt)&&(*pt!='\"')){
-						Weather[i] = *pt; // copy into weather string
-						pt++; 
-						i++;    
-					}
-				}
-				Weather[i] = 0;   
-
-				// update ST7735 LCD with weather information
-				ST7735_OutString(City); ST7735_OutString("\n\r");
-				ST7735_OutString(Temperature); ST7735_OutString(" C\n\r");
-				ST7735_OutString(Weather);
-			
-				// draw some example bmps here
-				ST7735_DrawBitmap(ST7735_TFTWIDTH/2, 40, sun, 40, 40);
-				ST7735_DrawBitmap(ST7735_TFTWIDTH/2, 80, cloudy, 40, 40);
-				ST7735_DrawBitmap(ST7735_TFTWIDTH/2, 120, rainy, 40, 40);
       }
     }
     while(Board_Input()==0){}; // wait for touch

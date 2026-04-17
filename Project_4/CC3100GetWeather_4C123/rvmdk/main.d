@@ -1,6 +1,5 @@
 ./rvmdk/main.o: main.c ..\cc3100\simplelink\include\simplelink.h \
   ..\cc3100\platform\ek-tm4c123gxl\user.h \
-  C:\Keil_v5\ARM\ARMCLANG\include\string.h \
   ..\cc3100\platform\ek-tm4c123gxl\board.h \
   ..\cc3100\platform\ek-tm4c123gxl\spi.h \
   ..\cc3100\simplelink\include\..\source\nonos.h \
