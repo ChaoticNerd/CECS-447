@@ -2487,9 +2487,9 @@ Image Symbol Table
     g_pui32Xtals                             0x000036b0   Data         108  sysctl.o(.constdata)
     g_pppui32XTALtoVCO                       0x0000371c   Data         288  sysctl.o(.constdata)
     g_sXTALtoMEMTIM                          0x0000383c   Data          48  sysctl.o(.constdata)
-    g_ui32UARTInt                            0x000039a8   Data          12  uartstdio.o(.rodata.g_ui32UARTInt)
-    [Anonymous Symbol]                       0x000039a8   Section        0  uartstdio.o(.rodata.g_ui32UARTInt)
-    [Anonymous Symbol]                       0x000039b4   Section        0  main.o(.rodata.str1.1)
+    g_ui32UARTInt                            0x000039b0   Data          12  uartstdio.o(.rodata.g_ui32UARTInt)
+    [Anonymous Symbol]                       0x000039b0   Section        0  uartstdio.o(.rodata.g_ui32UARTInt)
+    [Anonymous Symbol]                       0x000039bc   Section        0  main.o(.rodata.str1.1)
     g_bDisableEcho                           0x20000000   Data           1  uartstdio.o(.bss..L_MergedGlobals)
     [Anonymous Symbol]                       0x20000000   Section        0  uartstdio.o(.bss..L_MergedGlobals)
     UARTStdioIntHandler.bLastWasCR           0x20000001   Data           1  uartstdio.o(.bss..L_MergedGlobals)
@@ -2709,32 +2709,32 @@ Image Symbol Table
     __scatterload_null                       0x0000329b   Thumb Code     2  handlers.o(i.__scatterload_null)
     __scatterload_zeroinit                   0x0000329d   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
     API_KEY                                  0x0000386c   Data          40  main.o(.rodata.API_KEY)
-    BASIC_LINK                               0x00003894   Data          14  main.o(.rodata.BASIC_LINK)
-    CITY_ID                                  0x000038a2   Data          12  main.o(.rodata.CITY_ID)
-    CITY_NAME                                0x000038ae   Data          10  main.o(.rodata.CITY_NAME)
-    CO_ORDS_LAT                              0x000038b8   Data          13  main.o(.rodata.CO_ORDS_LAT)
-    CO_ORDS_LONG                             0x000038c5   Data           6  main.o(.rodata.CO_ORDS_LONG)
-    REQUEST                                  0x000038cb   Data          81  main.o(.rodata.REQUEST)
-    ZIP_CODE                                 0x0000391c   Data           9  main.o(.rodata.ZIP_CODE)
-    _SlActionLookupTable                     0x00003928   Data          56  driver.o(.rodata._SlActionLookupTable)
-    _SlDeviceGetCmdCtrl                      0x00003960   Data           4  device.o(.rodata._SlDeviceGetCmdCtrl)
-    _SlGetHostByNameCtrl                     0x00003964   Data           4  netapp.o(.rodata._SlGetHostByNameCtrl)
-    _SlNetAppSendTokenValueCmdCtrl           0x00003968   Data           4  netapp.o(.rodata._SlNetAppSendTokenValueCmdCtrl)
-    _SlNetCfgSetCmdCtrl                      0x0000396c   Data           4  netcfg.o(.rodata._SlNetCfgSetCmdCtrl)
-    _SlPolicySetCmdCtrl                      0x00003970   Data           4  wlan.o(.rodata._SlPolicySetCmdCtrl)
-    _SlProfileDelCmdCtrl                     0x00003974   Data           4  wlan.o(.rodata._SlProfileDelCmdCtrl)
-    _SlRecvCmdCtrl                           0x00003978   Data           4  socket.o(.rodata._SlRecvCmdCtrl)
-    _SlRegisterServiceCtrl                   0x0000397c   Data           4  netapp.o(.rodata._SlRegisterServiceCtrl)
-    _SlSendCmdCtrl                           0x00003980   Data           4  socket.o(.rodata._SlSendCmdCtrl)
-    _SlSockCloseCmdCtrl                      0x00003984   Data           4  socket.o(.rodata._SlSockCloseCmdCtrl)
-    _SlSockSocketCmdCtrl                     0x00003988   Data           4  socket.o(.rodata._SlSockSocketCmdCtrl)
-    _SlStopCmdCtrl                           0x0000398c   Data           4  device.o(.rodata._SlStopCmdCtrl)
-    _SlWlanCfgSetCmdCtrl                     0x00003990   Data           4  wlan.o(.rodata._SlWlanCfgSetCmdCtrl)
-    _SlWlanSetModeCmdCtrl                    0x00003994   Data           4  wlan.o(.rodata._SlWlanSetModeCmdCtrl)
-    g_H2NCnysPattern                         0x00003998   Data           8  driver.o(.rodata.g_H2NCnysPattern)
-    g_H2NSyncPattern                         0x000039a0   Data           8  driver.o(.rodata.g_H2NSyncPattern)
-    Region$$Table$$Base                      0x00003a50   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x00003a60   Number         0  anon$$obj.o(Region$$Table)
+    BASIC_LINK                               0x00003894   Data          15  main.o(.rodata.BASIC_LINK)
+    CITY_ID                                  0x000038a3   Data          12  main.o(.rodata.CITY_ID)
+    CITY_NAME                                0x000038af   Data          11  main.o(.rodata.CITY_NAME)
+    CO_ORDS_LAT                              0x000038ba   Data          13  main.o(.rodata.CO_ORDS_LAT)
+    CO_ORDS_LONG                             0x000038c7   Data           6  main.o(.rodata.CO_ORDS_LONG)
+    REQUEST                                  0x000038cd   Data          87  main.o(.rodata.REQUEST)
+    ZIP_CODE                                 0x00003924   Data           9  main.o(.rodata.ZIP_CODE)
+    _SlActionLookupTable                     0x00003930   Data          56  driver.o(.rodata._SlActionLookupTable)
+    _SlDeviceGetCmdCtrl                      0x00003968   Data           4  device.o(.rodata._SlDeviceGetCmdCtrl)
+    _SlGetHostByNameCtrl                     0x0000396c   Data           4  netapp.o(.rodata._SlGetHostByNameCtrl)
+    _SlNetAppSendTokenValueCmdCtrl           0x00003970   Data           4  netapp.o(.rodata._SlNetAppSendTokenValueCmdCtrl)
+    _SlNetCfgSetCmdCtrl                      0x00003974   Data           4  netcfg.o(.rodata._SlNetCfgSetCmdCtrl)
+    _SlPolicySetCmdCtrl                      0x00003978   Data           4  wlan.o(.rodata._SlPolicySetCmdCtrl)
+    _SlProfileDelCmdCtrl                     0x0000397c   Data           4  wlan.o(.rodata._SlProfileDelCmdCtrl)
+    _SlRecvCmdCtrl                           0x00003980   Data           4  socket.o(.rodata._SlRecvCmdCtrl)
+    _SlRegisterServiceCtrl                   0x00003984   Data           4  netapp.o(.rodata._SlRegisterServiceCtrl)
+    _SlSendCmdCtrl                           0x00003988   Data           4  socket.o(.rodata._SlSendCmdCtrl)
+    _SlSockCloseCmdCtrl                      0x0000398c   Data           4  socket.o(.rodata._SlSockCloseCmdCtrl)
+    _SlSockSocketCmdCtrl                     0x00003990   Data           4  socket.o(.rodata._SlSockSocketCmdCtrl)
+    _SlStopCmdCtrl                           0x00003994   Data           4  device.o(.rodata._SlStopCmdCtrl)
+    _SlWlanCfgSetCmdCtrl                     0x00003998   Data           4  wlan.o(.rodata._SlWlanCfgSetCmdCtrl)
+    _SlWlanSetModeCmdCtrl                    0x0000399c   Data           4  wlan.o(.rodata._SlWlanSetModeCmdCtrl)
+    g_H2NCnysPattern                         0x000039a0   Data           8  driver.o(.rodata.g_H2NCnysPattern)
+    g_H2NSyncPattern                         0x000039a8   Data           8  driver.o(.rodata.g_H2NSyncPattern)
+    Region$$Table$$Base                      0x00003a58   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x00003a68   Number         0  anon$$obj.o(Region$$Table)
     g_Status                                 0x2000001c   Data           4  main.o(.bss..L_MergedGlobals)
     DestinationIP                            0x20000020   Data           4  main.o(.bss..L_MergedGlobals)
     SockID                                   0x20000024   Data           4  main.o(.bss..L_MergedGlobals)
@@ -2758,9 +2758,9 @@ Memory Map of the image
 
   Image Entry point : 0x0000026d
 
-  Load Region LR_IROM (Base: 0x00000000, Size: 0x00003a60, Max: 0x00040000, ABSOLUTE)
+  Load Region LR_IROM (Base: 0x00000000, Size: 0x00003a68, Max: 0x00040000, ABSOLUTE)
 
-    Execution Region ER_IROM (Exec base: 0x00000000, Load base: 0x00000000, Size: 0x00003a60, Max: 0x00040000, ABSOLUTE)
+    Execution Region ER_IROM (Exec base: 0x00000000, Load base: 0x00000000, Size: 0x00003a68, Max: 0x00040000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -2953,37 +2953,37 @@ Memory Map of the image
     0x0000359c   0x0000359c   0x0000010c   Data   RO         1282    .constdata          driverlib.lib(interrupt.o)
     0x000036a8   0x000036a8   0x000001c4   Data   RO         1585    .constdata          driverlib.lib(sysctl.o)
     0x0000386c   0x0000386c   0x00000028   Data   RO          857    .rodata.API_KEY     main.o
-    0x00003894   0x00003894   0x0000000e   Data   RO          851    .rodata.BASIC_LINK  main.o
-    0x000038a2   0x000038a2   0x0000000c   Data   RO          853    .rodata.CITY_ID     main.o
-    0x000038ae   0x000038ae   0x0000000a   Data   RO          852    .rodata.CITY_NAME   main.o
-    0x000038b8   0x000038b8   0x0000000d   Data   RO          854    .rodata.CO_ORDS_LAT  main.o
-    0x000038c5   0x000038c5   0x00000006   Data   RO          855    .rodata.CO_ORDS_LONG  main.o
-    0x000038cb   0x000038cb   0x00000051   Data   RO          858    .rodata.REQUEST     main.o
-    0x0000391c   0x0000391c   0x00000009   Data   RO          856    .rodata.ZIP_CODE    main.o
-    0x00003925   0x00003925   0x00000003   PAD
-    0x00003928   0x00003928   0x00000038   Data   RO          192    .rodata._SlActionLookupTable  driver.o
-    0x00003960   0x00003960   0x00000004   Data   RO           94    .rodata._SlDeviceGetCmdCtrl  device.o
-    0x00003964   0x00003964   0x00000004   Data   RO          295    .rodata._SlGetHostByNameCtrl  netapp.o
-    0x00003968   0x00003968   0x00000004   Data   RO          297    .rodata._SlNetAppSendTokenValueCmdCtrl  netapp.o
-    0x0000396c   0x0000396c   0x00000004   Data   RO          312    .rodata._SlNetCfgSetCmdCtrl  netcfg.o
-    0x00003970   0x00003970   0x00000004   Data   RO          484    .rodata._SlPolicySetCmdCtrl  wlan.o
-    0x00003974   0x00003974   0x00000004   Data   RO          487    .rodata._SlProfileDelCmdCtrl  wlan.o
-    0x00003978   0x00003978   0x00000004   Data   RO          405    .rodata._SlRecvCmdCtrl  socket.o
-    0x0000397c   0x0000397c   0x00000004   Data   RO          293    .rodata._SlRegisterServiceCtrl  netapp.o
-    0x00003980   0x00003980   0x00000004   Data   RO          402    .rodata._SlSendCmdCtrl  socket.o
-    0x00003984   0x00003984   0x00000004   Data   RO          400    .rodata._SlSockCloseCmdCtrl  socket.o
-    0x00003988   0x00003988   0x00000004   Data   RO          399    .rodata._SlSockSocketCmdCtrl  socket.o
-    0x0000398c   0x0000398c   0x00000004   Data   RO           91    .rodata._SlStopCmdCtrl  device.o
-    0x00003990   0x00003990   0x00000004   Data   RO          494    .rodata._SlWlanCfgSetCmdCtrl  wlan.o
-    0x00003994   0x00003994   0x00000004   Data   RO          493    .rodata._SlWlanSetModeCmdCtrl  wlan.o
-    0x00003998   0x00003998   0x00000008   Data   RO          191    .rodata.g_H2NCnysPattern  driver.o
-    0x000039a0   0x000039a0   0x00000008   Data   RO          190    .rodata.g_H2NSyncPattern  driver.o
-    0x000039a8   0x000039a8   0x0000000c   Data   RO          708    .rodata.g_ui32UARTInt  uartstdio.o
-    0x000039b4   0x000039b4   0x0000009c   Data   RO          860    .rodata.str1.1      main.o
-    0x00003a50   0x00003a50   0x00000010   Data   RO         2206    Region$$Table       anon$$obj.o
+    0x00003894   0x00003894   0x0000000f   Data   RO          851    .rodata.BASIC_LINK  main.o
+    0x000038a3   0x000038a3   0x0000000c   Data   RO          853    .rodata.CITY_ID     main.o
+    0x000038af   0x000038af   0x0000000b   Data   RO          852    .rodata.CITY_NAME   main.o
+    0x000038ba   0x000038ba   0x0000000d   Data   RO          854    .rodata.CO_ORDS_LAT  main.o
+    0x000038c7   0x000038c7   0x00000006   Data   RO          855    .rodata.CO_ORDS_LONG  main.o
+    0x000038cd   0x000038cd   0x00000057   Data   RO          858    .rodata.REQUEST     main.o
+    0x00003924   0x00003924   0x00000009   Data   RO          856    .rodata.ZIP_CODE    main.o
+    0x0000392d   0x0000392d   0x00000003   PAD
+    0x00003930   0x00003930   0x00000038   Data   RO          192    .rodata._SlActionLookupTable  driver.o
+    0x00003968   0x00003968   0x00000004   Data   RO           94    .rodata._SlDeviceGetCmdCtrl  device.o
+    0x0000396c   0x0000396c   0x00000004   Data   RO          295    .rodata._SlGetHostByNameCtrl  netapp.o
+    0x00003970   0x00003970   0x00000004   Data   RO          297    .rodata._SlNetAppSendTokenValueCmdCtrl  netapp.o
+    0x00003974   0x00003974   0x00000004   Data   RO          312    .rodata._SlNetCfgSetCmdCtrl  netcfg.o
+    0x00003978   0x00003978   0x00000004   Data   RO          484    .rodata._SlPolicySetCmdCtrl  wlan.o
+    0x0000397c   0x0000397c   0x00000004   Data   RO          487    .rodata._SlProfileDelCmdCtrl  wlan.o
+    0x00003980   0x00003980   0x00000004   Data   RO          405    .rodata._SlRecvCmdCtrl  socket.o
+    0x00003984   0x00003984   0x00000004   Data   RO          293    .rodata._SlRegisterServiceCtrl  netapp.o
+    0x00003988   0x00003988   0x00000004   Data   RO          402    .rodata._SlSendCmdCtrl  socket.o
+    0x0000398c   0x0000398c   0x00000004   Data   RO          400    .rodata._SlSockCloseCmdCtrl  socket.o
+    0x00003990   0x00003990   0x00000004   Data   RO          399    .rodata._SlSockSocketCmdCtrl  socket.o
+    0x00003994   0x00003994   0x00000004   Data   RO           91    .rodata._SlStopCmdCtrl  device.o
+    0x00003998   0x00003998   0x00000004   Data   RO          494    .rodata._SlWlanCfgSetCmdCtrl  wlan.o
+    0x0000399c   0x0000399c   0x00000004   Data   RO          493    .rodata._SlWlanSetModeCmdCtrl  wlan.o
+    0x000039a0   0x000039a0   0x00000008   Data   RO          191    .rodata.g_H2NCnysPattern  driver.o
+    0x000039a8   0x000039a8   0x00000008   Data   RO          190    .rodata.g_H2NSyncPattern  driver.o
+    0x000039b0   0x000039b0   0x0000000c   Data   RO          708    .rodata.g_ui32UARTInt  uartstdio.o
+    0x000039bc   0x000039bc   0x0000009c   Data   RO          860    .rodata.str1.1      main.o
+    0x00003a58   0x00003a58   0x00000010   Data   RO         2206    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM (Exec base: 0x20000000, Load base: 0x00003a60, Size: 0x00004e70, Max: 0x00008000, ABSOLUTE)
+    Execution Region RW_IRAM (Exec base: 0x20000000, Load base: 0x00003a68, Size: 0x00004e70, Max: 0x00008000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -3000,7 +3000,7 @@ Memory Map of the image
     0x20000c64        -       0x00000004   Zero   RW          189    .bss.pPingCallBackFunc  driver.o
     0x20000c68        -       0x00000001   Zero   RW          850    .bss.userFinished   main.o
     0x20000c69        -       0x00000200   Zero   RW          859    .bss.userInput      main.o
-    0x20000e69   0x00003a60   0x00000007   PAD
+    0x20000e69   0x00003a68   0x00000007   PAD
     0x20000e70        -       0x00004000   Zero   RW          435    STACK               startup_rvmdk.o
 
 
@@ -3016,7 +3016,7 @@ Image component sizes
       4168         98         72          0        364      23805   driver.o
         84          4          0          0          0        950   flowcont.o
        136         28          0          0          0       1280   led.o
-      1602        396        341          0       2101      10716   main.o
+      1602        396        349          0       2101      10716   main.o
        974         32         12          0          0      16757   netapp.o
         60          4          4          0          0       2507   netcfg.o
        142          4          0          0         40       2234   nonos.o
@@ -3027,7 +3027,7 @@ Image component sizes
        574         20         16          0          0      17336   wlan.o
 
     ----------------------------------------------------------------------
-     11080       1400        500          0      20080     115979   Object Totals
+     11080       1400        508          0      20080     115979   Object Totals
          0          0         16          0          0          0   (incl. Generated)
         16          0          3          0          7          0   (incl. Padding)
 
@@ -3078,15 +3078,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     13196       1512       1748          0      20080     135240   Grand Totals
-     13196       1512       1748          0      20080     135240   ELF Image Totals
-     13196       1512       1748          0          0          0   ROM Totals
+     13196       1512       1756          0      20080     135240   Grand Totals
+     13196       1512       1756          0      20080     135240   ELF Image Totals
+     13196       1512       1756          0          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                14944 (  14.59kB)
+    Total RO  Size (Code + RO Data)                14952 (  14.60kB)
     Total RW  Size (RW Data + ZI Data)             20080 (  19.61kB)
-    Total ROM Size (Code + RO Data + RW Data)      14944 (  14.59kB)
+    Total ROM Size (Code + RO Data + RW Data)      14952 (  14.60kB)
 
 ==============================================================================
 

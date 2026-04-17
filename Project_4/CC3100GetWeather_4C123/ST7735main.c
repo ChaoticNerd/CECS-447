@@ -115,7 +115,7 @@ uint16_t UART0_InString(uint8_t *bufPt, uint16_t max);
 void clear_buffer(uint8_t *bufPt, uint16_t strLen);
 
 const char BASIC_LINK[] = "GET data/2.5/";
-const char CITY_NAME[] = "direct?q=";
+const char CITY_NAME[] = "weather?q=";
 const char CITY_ID[] = "weather?id=";
 const char CO_ORDS_LAT[] = "reverse?lat=";
 const char CO_ORDS_LONG[] = "&lon=";

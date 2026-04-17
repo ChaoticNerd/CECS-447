@@ -223,7 +223,7 @@ char character;
 #define MAX_SSID_SIZE       32
 char userInput[MAX_SEND_BUFF_SIZE]; // im crying bruh there is a send buffer that exsts already
 
-const char BASIC_LINK[] = "GET data/2.5/";
+const char BASIC_LINK[] = "GET /data/2.5/";
 const char CITY_NAME[] = "weather?q=";
 const char CITY_ID[] = "weather?id=";
 const char CO_ORDS_LAT[] = "reverse?lat=";
@@ -321,7 +321,7 @@ void Crash(uint32_t time){
 // 2) metric(for celsius), imperial(for fahrenheit)
 // api.openweathermap.org/data/2.5/weather?q={city name},{state code}&appid={API key}
 //#define REQUEST "GET /data/2.5/weather?q=Long%20Beach&APPID=e5bcd4884f0aec35871463d10fa53ad5&units=metric HTTP/1.1\r\nUser-Agent: Keil\r\nHost:api.openweathermap.org\r\nAccept: */*\r\n\r\n"
-const char REQUEST[] = "=metric HTTP/1.1\r\nUser-Agent: Keil\r\nHost:api.openweathermap.org\r\nAccept: */*\r\n\r\n";
+const char REQUEST[] = "&units=metric HTTP/1.1\r\nUser-Agent: Keil\r\nHost:api.openweathermap.org\r\nAccept: */*\r\n\r\n";
 
 // https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
 
